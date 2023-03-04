@@ -5,3 +5,22 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   width: 500px;
 }
+
+.race-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.race-group {
+  text-align: center;
+  min-height: 300px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-body {
+  font-size: large;
+}
