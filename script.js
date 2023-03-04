@@ -2,49 +2,49 @@
 const dom = {}
 const state = {}
 
-// cache DOM elements, fetch race data from dogAPI, then render races page
+// cache DOM elements, fetch breed data from dogAPI, then render breeds page
 cacheDom();
-fetchRaces().then(renderRaces).catch(err => console.log(err));
+fetchBreeds().then(renderBreeds).catch(err => console.log(err));
 
 // queries and stores static DOM elements
 function cacheDom() {
   dom.container = document.getElementById('container');
 }
 
-// renders dog races list
-function renderRaces() {
-  // add container for races
-  const domRaceContainer = document.createElement('div');
-  domRaceContainer.classList.add('race-container');
-  dom.container.appendChild(domRaceContainer);
+// renders dog breeds list
+function renderBreeds() {
+  // add container for breeds
+  const domBreedContainer = document.createElement('div');
+  domBreedContainer.classList.add('breed-container');
+  dom.container.appendChild(domBreedContainer);
 
-  // add every race
-  for (let raceName in state.races.message) {
+  // add every breed
+  for (let breedName in state.breeds.message) {
     // add group for name and image
-    const domRaceGroup = document.createElement('div');
-    domRaceGroup.classList.add('race-group', 'card');
-    domRaceContainer.appendChild(domRaceGroup);
+    const domBreedGroup = document.createElement('div');
+    domBreedGroup.classList.add('breed-group', 'card');
+    domBreedContainer.appendChild(domBreedGroup);
     
     // add name to group
-    const domRaceName = document.createElement('div');
-    domRaceName.textContent = raceName; 
-    domRaceName.classList.add('race-name');
-    domRaceGroup.appendChild(domRaceName);
+    const domBreedName = document.createElement('div');
+    domBreedName.textContent = breedName; 
+    domBreedName.classList.add('breed-name');
+    domBreedGroup.appendChild(domBreedName);
     
     // add image to group !CHANGE FROM DIV TO IMG!
-    const domRaceImg = document.createElement('img');
-    domRaceImg.src = './dog_placeholder.jpg';
-    domRaceImg.classList.add('card-img-bottom')
-    domRaceGroup.appendChild(domRaceImg);
+    const domBreedImg = document.createElement('img');
+    domBreedImg.src = './dog_placeholder.jpg';
+    domBreedImg.classList.add('card-img-bottom')
+    domBreedGroup.appendChild(domBreedImg);
   }
 }
 
-// fetches race data, then stores it in state.races
-async function fetchRaces() {
+// fetches breed data, then stores it in state.breeds
+async function fetchBreeds() {
   const res = await fetch(' https://dog.ceo/api/breeds/list/all');
   if (!res.ok) {
     throw new Error(`dogAPI fetch failed with status ${res.status}`);
   }
-  const races = await res.json();
-  state.races = races;
+  const breeds = await res.json();
+  state.breeds = breeds;
 }
