@@ -39,6 +39,9 @@ function renderBreeds() {
     const domBreedGroup = document.createElement('div');
     domBreedGroup.classList.add('breed-group', 'card');
     domBreedGroup.onclick = () => renderSubBreeds(breedName); // render sub-breeds on click
+    if (state.breeds[breedName].length) {
+      domBreedGroup.classList.add('has-sub-breeds');
+    }
     dom.breedContainer.appendChild(domBreedGroup);
     
     // add name to group
@@ -88,11 +91,8 @@ function renderSubBreeds(breed) {
   dom.subBreeds.classList.add('breed-container');
   dom.container.appendChild(dom.subBreeds);
 
-  // check if array is empty
+  // check if array is empty (optional using .forEach)
 
-  console.log(`breed: ${breed}`);
-  console.log(`object: ${JSON.stringify(state.breeds)}`);
-  console.log(`object2: ${JSON.stringify(state.breeds[breed])}`);
   // add every sub-breed
   state.breeds[breed].forEach(subBreed => {
     console.log(`subbreed: ${subBreed}`);
