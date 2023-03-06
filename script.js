@@ -5,6 +5,7 @@ const state = {
   images: {},
 }
 
+
 // cache DOM elements, fetch breed data from dogAPI, then render breeds page
 cacheDom();
 fetchBreeds()
@@ -18,15 +19,28 @@ fetchBreeds()
 })
 .catch(err => console.log(err));
 
+
 // queries and stores static DOM elements
 function cacheDom() {
   dom.container = document.getElementById('container');
+  dom.header = document.querySelector('.header');
+  dom.navBar = document.querySelector('.nav-bar');
+  dom.navBarLeft = document.querySelector('.nav-bar .left');
+  dom.navBarRight = document.querySelector('.nav-bar .right');
 }
 
 // renders dog breeds page
 function renderBreeds() {
   // clean page
   dom.container.innerHTML = '';
+  dom.navBarLeft.innerHTML = '';
+
+  // add nav bar button to refresh (for new images)
+  const refresh = document.createElement('div');
+  refresh.onclick = () => window.location.reload();
+  refresh.textContent = 'All Breeds';
+  refresh.classList.add('text-btn');
+  dom.navBarLeft.appendChild(refresh); 
 
   // add container for breeds
   dom.breedContainer = document.createElement('div');
@@ -46,14 +60,14 @@ function renderBreeds() {
     
     // add name to group
     const domBreedName = document.createElement('div');
-    domBreedName.textContent = breedName; 
+    domBreedName.textContent = capitalize(breedName); 
     domBreedName.classList.add('breed-name');
     domBreedGroup.appendChild(domBreedName);
     
     // add image to group
     const domBreedImg = document.createElement('img');
     domBreedImg.src = './dog_placeholder.jpg';
-    domBreedImg.classList.add('card-img-bottom')
+    domBreedImg.classList.add('card-img-bottom', 'small-img')
     domBreedGroup.appendChild(domBreedImg);
     
     
@@ -75,23 +89,56 @@ function renderBreeds() {
 // renders dog sub-breed page
 function renderSubBreeds(breed) {
   // clean page
+  dom.navBarLeft.innerHTML = '';
   dom.container.innerHTML = '';
 
   // add back to breeds button
-  const back = document.createElement('button');
+  const back = document.createElement('div');
   back.onclick = renderBreeds;
-  back.textContent = 'Back';
-  back.classList.add('btn', 'btn-primary');
-  dom.container.appendChild(back);
+  back.textContent = 'Back to All Breeds';
+  back.classList.add('text-btn');
+  dom.navBarLeft.appendChild(back);
 
-  // add subtitle
+  // add name header
+  const name = document.createElement('div');
+  name.textContent = capitalize(breed) + ' Sub-Breeds';
+  name.classList.add('name-header');
+  dom.container.appendChild(name);
+
+  // if no sub-breeds
+  if (!state.breeds[breed].length) {
+    // add message to inform about lack of sub-breeds
+    const msg = document.createElement('div');
+    msg.textContent = `This breed has no sub-breeds`;
+    dom.container.appendChild(msg);
+
+    // add full-scale picture for generic breed
+    const breedImg = document.createElement('img');
+    breedImg.classList.add('large-img');
+    dom.container.appendChild(breedImg);
+    // get image source
+    if (!state.images[breed]) {
+      fetchBreedImg(breed)
+      .then(src => {
+        state.images[breed] = src;
+        breedImg.src = src;
+      })
+      .catch(err => console.log(err));
+    }
+    else { // image already fetched
+      breedImg.src = state.images[breed];
+    }
+  }
 
   // add container for sub-breeds
   dom.subBreeds = document.createElement('div');
-  dom.subBreeds.classList.add('breed-container');
+  dom.subBreeds.classList.add('sub-breed-container');
   dom.container.appendChild(dom.subBreeds);
 
+  
   // check if array is empty (optional using .forEach)
+  const length = state.breeds[breed].length;
+  if (!length) return;
 
   // add every sub-breed
   state.breeds[breed].forEach(subBreed => {
@@ -100,18 +147,21 @@ function renderSubBreeds(breed) {
     const group = document.createElement('div');
     group.classList.add('breed-group', 'card');
     dom.subBreeds.appendChild(group);
-
-    // add name to group
-    const name = document.createElement('div');
-    name.textContent = subBreed;
-    name.classList.add('breed-name');
-    group.appendChild(name);
+    // place single sub-breed in middle column
+    if (length == 1) group.style["grid-column"] = "2 / 3";
 
     // add img to group
     const img = document.createElement('img');
     img.src = './dog_placeholder.jpg';
-    img.classList.add('card-img-bottom');
+    img.classList.add('card-img-top', 'small-img');
     group.appendChild(img);
+    
+    // add name to group
+    const name = document.createElement('div');
+    name.textContent = capitalize(subBreed);
+    name.classList.add('breed-name');
+    group.appendChild(name);
+
 
     // get image source
     if (!state.images[breed+subBreed]) {
@@ -158,4 +208,10 @@ async function fetchSubBreedImg(breed, subBreed) {
   state.images[breed+subBreed] = img.message;
   return img.message;
 }
+
+// capitalizes string
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 

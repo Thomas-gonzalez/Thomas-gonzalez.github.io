@@ -1,39 +1,109 @@
+:root {
+  --accent-color: #0a1a28;
+  --main-color: white;
+  --font-color: black;
+  --font-size-large: 46px;
+  --font-size-medium: 30px;
+  --font-size-normal: 20px;
+}
 
+body {
+  font-family: 'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  background-color: var(--main-color);
+  color: var(--font-color);
+  font-size: var(--font-size-normal);
+}
+
+.header {
+  font-weight: 600;
+  padding: 30px;
+  font-size: 46px;
+  color: var(--accent-color);
+}
+
+.nav-bar {
+  height: 50px;
+  background-color: var(--accent-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 8px 30px;
+}
+
+.text-btn:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name-header {
+  text-align: center;
+  margin: 20px;
+  font-weight: 600;
+  font-size: var(--font-size-medium);
+}
 
 .breed-container {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  padding: 32px;
+  justify-content: center;
+}
+
+.sub-breed-container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 80%;
+}
+
+@media (max-width: 750px) {
+  .sub-breed-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sub-breed-container .breed-group .small-img {
+  height: 400px;
+  width: auto;
 }
 
 .breed-group {
+  background-color: var(--main-color);
   text-align: center;
-  /* min-height: 200px;
-  width: 200px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .breed-group .breed-name {
+  font-size: var(--font-size-normal);
+  font-weight: 600;
   justify-self: flex-start;
+  padding: 4px;
 }
 
-.breed-group img {
+.breed-group .small-img {
   height: 200px;
-  width: 200px
+  width: 300px;
 }
 
 .breed-group {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
-.breed-group.has-sub-breeds:hover {
+.breed-group:hover {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
-.breed-name {
-  font-size: large;
-  font-weight: bold;
+.large-img {
+  max-height: 600px;
+  max-width: 800px;
 }
